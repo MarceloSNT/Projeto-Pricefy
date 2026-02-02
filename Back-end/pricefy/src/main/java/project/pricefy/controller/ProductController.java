@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.pricefy.dto.request.ProductRequestDto;
+import project.pricefy.dto.request.ProductRequestEditDto;
 import project.pricefy.dto.response.ProductResponseDto;
 import project.pricefy.service.ProductService;
 
@@ -28,5 +29,12 @@ public class ProductController {
     @GetMapping("/findAll")
     public ResponseEntity<List<ProductResponseDto>> findAllProducts(){
         return ResponseEntity.ok().body(productService.listAll());
+    }
+
+
+    @PatchMapping("/edit/{id}")
+    public ResponseEntity<ProductResponseDto> editProduct(@PathVariable Long id,@RequestBody @Valid ProductRequestEditDto productRequestEdit){
+        ProductResponseDto product = productService.edit(id, productRequestEdit);
+        return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 }

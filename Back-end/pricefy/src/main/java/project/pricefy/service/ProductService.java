@@ -1,9 +1,13 @@
 package project.pricefy.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import project.pricefy.dto.request.ProductRequestDto;
+import project.pricefy.dto.request.ProductRequestEditDto;
 import project.pricefy.dto.response.ProductResponseDto;
 import project.pricefy.entity.ProductModel;
 import project.pricefy.repository.ProductRepository;
@@ -35,7 +39,7 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductResponseDto> listAll(){
+    public List<ProductResponseDto> listAll() {
         return productRepository.findAll()
                 .stream()
                 .map(productModel -> new ProductResponseDto(
@@ -45,5 +49,30 @@ public class ProductService {
                         productModel.getVlAmount()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ProductResponseDto edit(Long id, ProductRequestEditDto productRequestEdit) {
+
+        ProductModel product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        if (productRequestEdit.name() != null) {
+            product.setName(productRequestEdit.name());
+        }
+        if (productRequestEdit.vlUnity() != null) {
+            product.setVlUnity(productRequestEdit.vlUnity());
+        }
+        if (productRequestEdit.vlAmount() != null) {
+            product.setVlAmount(productRequestEdit.vlAmount());
+        }
+
+        productRepository.save(product);
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getVlUnity(),
+                product.getVlAmount()
+        );
     }
 }
