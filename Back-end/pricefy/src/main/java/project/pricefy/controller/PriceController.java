@@ -9,6 +9,8 @@ import project.pricefy.dto.request.PriceRequestDto;
 import project.pricefy.dto.response.PriceResponseDto;
 import project.pricefy.service.PriceService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -21,5 +23,15 @@ public class PriceController {
     public ResponseEntity<PriceResponseDto> createPrice(@RequestBody @Valid PriceRequestDto priceRequest){
         PriceResponseDto price = priceService.save(priceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(price);
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<PriceResponseDto>> findAllPrice(){
+        return ResponseEntity.ok().body(priceService.listAll());
+    }
+
+    @GetMapping("/lowestPrice")
+    public ResponseEntity<List<PriceResponseDto>> findLowestPrice(){
+        return ResponseEntity.ok().body(priceService.listLowetsPrice());
     }
 }

@@ -14,6 +14,11 @@ import project.pricefy.repository.MarketRepository;
 import project.pricefy.repository.PriceRepository;
 import project.pricefy.repository.ProductRepository;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PriceService {
@@ -44,4 +49,39 @@ public class PriceService {
                 saved.getIdMarket().getName()
         );
     }
+
+    @Transactional
+    public List<PriceResponseDto> listAll(){
+        return priceRepository.findAll()
+                .stream()
+                .map(priceModel -> new PriceResponseDto(
+                        priceModel.getId(),
+                        priceModel.getVlPrice(),
+                        priceModel.getIdProduct().getName(),
+                        priceModel.getIdMarket().getName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PriceResponseDto> listLowetsPrice() {
+
+        return priceRepository.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.getIdProduct().getName(),
+                        Collectors.minBy(Comparator.comparing(PriceModel::getVlPrice))
+                ))
+                .values()
+                .stream()
+                .flatMap(Optional::stream)
+                .map(priceModel -> new PriceResponseDto(
+                        priceModel.getId(),
+                        priceModel.getVlPrice(),
+                        priceModel.getIdProduct().getName(),
+                        priceModel.getIdMarket().getName()
+                ))
+                .toList();
+    }
+
 }
