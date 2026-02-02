@@ -1,4 +1,4 @@
-package project.pricefy.Controller;
+package project.pricefy.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.pricefy.dto.request.ProductRequestDto;
 import project.pricefy.dto.response.ProductResponseDto;
-import project.pricefy.entity.ProductModel;
 import project.pricefy.service.ProductService;
 
 @RestController
