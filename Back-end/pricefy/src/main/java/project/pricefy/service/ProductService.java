@@ -8,6 +8,9 @@ import project.pricefy.dto.response.ProductResponseDto;
 import project.pricefy.entity.ProductModel;
 import project.pricefy.repository.ProductRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -29,5 +32,18 @@ public class ProductService {
                 saved.getVlUnity(),
                 saved.getVlAmount()
         );
+    }
+
+    @Transactional
+    public List<ProductResponseDto> listAll(){
+        return productRepository.findAll()
+                .stream()
+                .map(productModel -> new ProductResponseDto(
+                        productModel.getId(),
+                        productModel.getName(),
+                        productModel.getVlUnity(),
+                        productModel.getVlAmount()
+                ))
+                .collect(Collectors.toList());
     }
 }
