@@ -8,6 +8,9 @@ import project.pricefy.dto.response.MarketResponseDto;
 import project.pricefy.entity.MarketModel;
 import project.pricefy.repository.MarketRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class MarketService {
@@ -24,5 +27,16 @@ public class MarketService {
                 saved.getId(),
                 saved.getName()
         );
+    }
+
+    @Transactional
+    public List<MarketResponseDto> listAll(){
+        return marketRepository.findAll()
+                .stream()
+                .map(marketModel -> new MarketResponseDto(
+                        marketModel.getId(),
+                        marketModel.getName()
+                ))
+                .collect(Collectors.toList());
     }
 }

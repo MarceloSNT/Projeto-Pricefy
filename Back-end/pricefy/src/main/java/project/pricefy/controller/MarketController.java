@@ -9,6 +9,8 @@ import project.pricefy.dto.request.MarketRequestDto;
 import project.pricefy.dto.response.MarketResponseDto;
 import project.pricefy.service.MarketService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -21,5 +23,10 @@ public class MarketController {
     public ResponseEntity<MarketResponseDto> createMarket(@RequestBody @Valid MarketRequestDto marketRequest){
         MarketResponseDto market = marketService.save(marketRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(market);
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<MarketResponseDto>> findAllMarkets(){
+        return ResponseEntity.ok().body(marketService.listAll());
     }
 }
