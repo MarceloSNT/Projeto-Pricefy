@@ -34,4 +34,10 @@ public class PriceController {
     public ResponseEntity<List<PriceResponseDto>> findLowestPrice(){
         return ResponseEntity.ok().body(priceService.listLowetsPrice());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deletePrice(@PathVariable Long id){
+        priceService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

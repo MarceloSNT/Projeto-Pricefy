@@ -86,13 +86,7 @@ public class PriceService {
 
     @Transactional
     public void delete(Long id) {
-
-        PriceModel price = priceRepository.findByProduct_Id(id)
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new RuntimeException("Nenhum preço encontrado"));
-
-        priceRepository.delete(price);
+        priceRepository.deleteById(id);
     }
 
 }
