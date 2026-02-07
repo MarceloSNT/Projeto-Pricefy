@@ -21,7 +21,7 @@ public class PriceModel {
 
     @ManyToOne
     @JoinColumn(name = "IDPRODUCT")
-    private ProductModel idProduct;
+    private ProductModel product;
 
     @ManyToOne
     @JoinColumn(name = "IDMARKET")

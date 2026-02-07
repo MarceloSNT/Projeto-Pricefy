@@ -9,7 +9,7 @@ public record PriceRequestDto(
         Double vlPrice,
 
         @NotNull(message = "O produto é obrigatório")
-        Long idProduct,
+        Long product,
 
         @NotNull(message = "O mercado é obrigatório")
         Long idMarket

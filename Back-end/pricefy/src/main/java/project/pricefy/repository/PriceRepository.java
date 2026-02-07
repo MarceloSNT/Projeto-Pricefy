@@ -10,4 +10,9 @@ public interface PriceRepository extends JpaRepository<PriceModel, Long> {
 
     Optional<PriceModel> findById(Long id);
 
+    List<PriceModel> findByProduct_Id (Long idProduct);
+
+    void deleteByProduct_Id(Long id);
+
+
 }

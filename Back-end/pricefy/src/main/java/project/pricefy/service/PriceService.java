@@ -28,9 +28,9 @@ public class PriceService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public PriceResponseDto save(@RequestBody @Valid PriceRequestDto priceRequest){
+    public PriceResponseDto save(@RequestBody @Valid PriceRequestDto priceRequest) {
 
-        ProductModel product = productRepository.findById(priceRequest.idProduct())
+        ProductModel product = productRepository.findById(priceRequest.product())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         MarketModel market = marketRepository.findById(priceRequest.idMarket())
@@ -38,26 +38,26 @@ public class PriceService {
 
         PriceModel price = new PriceModel();
         price.setVlPrice(priceRequest.vlPrice());
-        price.setIdProduct(product);
+        price.setProduct(product);
         price.setIdMarket(market);
 
         PriceModel saved = priceRepository.save(price);
         return new PriceResponseDto(
                 saved.getId(),
                 saved.getVlPrice(),
-                saved.getIdProduct().getName(),
+                saved.getProduct().getName(),
                 saved.getIdMarket().getName()
         );
     }
 
     @Transactional
-    public List<PriceResponseDto> listAll(){
+    public List<PriceResponseDto> listAll() {
         return priceRepository.findAll()
                 .stream()
                 .map(priceModel -> new PriceResponseDto(
                         priceModel.getId(),
                         priceModel.getVlPrice(),
-                        priceModel.getIdProduct().getName(),
+                        priceModel.getProduct().getName(),
                         priceModel.getIdMarket().getName()
                 ))
                 .collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class PriceService {
         return priceRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(
-                        p -> p.getIdProduct().getName(),
+                        p -> p.getProduct().getName(),
                         Collectors.minBy(Comparator.comparing(PriceModel::getVlPrice))
                 ))
                 .values()
@@ -78,10 +78,21 @@ public class PriceService {
                 .map(priceModel -> new PriceResponseDto(
                         priceModel.getId(),
                         priceModel.getVlPrice(),
-                        priceModel.getIdProduct().getName(),
+                        priceModel.getProduct().getName(),
                         priceModel.getIdMarket().getName()
                 ))
                 .toList();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+
+        PriceModel price = priceRepository.findByProduct_Id(id)
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Nenhum preço encontrado"));
+
+        priceRepository.delete(price);
     }
 
 }
