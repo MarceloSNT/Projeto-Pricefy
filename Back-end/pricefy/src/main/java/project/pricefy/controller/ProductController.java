@@ -58,4 +58,12 @@ public class ProductController {
         productService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<Void> deleteAllProduct(){
+
+        priceService.deleteAll();
+        productService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
 }

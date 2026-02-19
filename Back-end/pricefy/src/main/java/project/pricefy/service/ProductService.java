@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import project.pricefy.dto.request.ProductRequestDto;
 import project.pricefy.dto.request.ProductRequestEditDto;
 import project.pricefy.dto.response.ProductResponseDto;
-import project.pricefy.entity.ProductModel;
+import project.pricefy.model.ProductModel;
+import project.pricefy.model.UserModel;
 import project.pricefy.repository.PriceRepository;
 import project.pricefy.repository.ProductRepository;
+import project.pricefy.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +21,19 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final PriceRepository priceRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public ProductResponseDto save(ProductRequestDto productRequest) {
         ProductModel product = new ProductModel();
+
+        UserModel user = userRepository.findByIdUser(productRequest.user())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
         product.setName(productRequest.name());
         product.setVlUnity(productRequest.vlUnity());
         product.setVlAmount(productRequest.vlAmount());
+        product.setUser(user);
 
         ProductModel saved = productRepository.save(product);
 
@@ -33,7 +41,8 @@ public class ProductService {
                 saved.getId(),
                 saved.getName(),
                 saved.getVlUnity(),
-                saved.getVlAmount()
+                saved.getVlAmount(),
+                saved.getUser().getUsername()
         );
     }
 
@@ -45,7 +54,8 @@ public class ProductService {
                         productModel.getId(),
                         productModel.getName(),
                         productModel.getVlUnity(),
-                        productModel.getVlAmount()
+                        productModel.getVlAmount(),
+                        productModel.getUser().getUsername()
                 ))
                 .collect(Collectors.toList());
     }
@@ -58,7 +68,8 @@ public class ProductService {
                         productModel.getId(),
                         productModel.getName(),
                         productModel.getVlUnity(),
-                        productModel.getVlAmount()
+                        productModel.getVlAmount(),
+                        productModel.getUser().getUsername()
                 ))
                 .collect(Collectors.toList());
     }
@@ -84,14 +95,20 @@ public class ProductService {
                 product.getId(),
                 product.getName(),
                 product.getVlUnity(),
-                product.getVlAmount()
+                product.getVlAmount(),
+                product.getUser().getUsername()
         );
     }
 
     @Transactional
     public void delete(Long id) {
-
         priceRepository.deleteByProduct_Id(id);
         productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        priceRepository.deleteAll();
+        productRepository.deleteAll();
     }
 }

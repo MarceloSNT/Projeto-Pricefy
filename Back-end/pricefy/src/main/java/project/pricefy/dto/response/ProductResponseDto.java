@@ -4,6 +4,7 @@ public record ProductResponseDto(
         Long id,
         String name,
         Double vlUnity,
-        Double vlAmount
+        Double vlAmount,
+        String user
 ) {
 }

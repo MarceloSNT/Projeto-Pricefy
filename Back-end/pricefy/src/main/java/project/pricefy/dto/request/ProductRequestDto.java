@@ -14,6 +14,9 @@ public record ProductRequestDto(
         Double vlUnity,
 
         @NotNull(message = "A quantidade é obrigatória")
-        Double vlAmount
+        Double vlAmount,
+
+        @NotNull(message = "Usuário é obrigatório")
+        Long user
 ) {
 }
