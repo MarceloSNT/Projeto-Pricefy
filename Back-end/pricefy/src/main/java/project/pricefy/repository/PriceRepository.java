@@ -1,11 +1,13 @@
 package project.pricefy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import project.pricefy.entity.PriceModel;
+import org.springframework.stereotype.Repository;
+import project.pricefy.model.PriceModel;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface PriceRepository extends JpaRepository<PriceModel, Long> {
 
     Optional<PriceModel> findById(Long id);

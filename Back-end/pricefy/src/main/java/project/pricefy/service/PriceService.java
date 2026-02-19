@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import project.pricefy.dto.request.PriceRequestDto;
 import project.pricefy.dto.response.PriceResponseDto;
-import project.pricefy.entity.MarketModel;
-import project.pricefy.entity.PriceModel;
-import project.pricefy.entity.ProductModel;
+import project.pricefy.model.MarketModel;
+import project.pricefy.model.PriceModel;
+import project.pricefy.model.ProductModel;
 import project.pricefy.repository.MarketRepository;
 import project.pricefy.repository.PriceRepository;
 import project.pricefy.repository.ProductRepository;
@@ -87,6 +87,11 @@ public class PriceService {
     @Transactional
     public void delete(Long id) {
         priceRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        priceRepository.deleteAll();
     }
 
 }

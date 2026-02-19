@@ -1,4 +1,4 @@
-package project.pricefy.entity;
+package project.pricefy.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class PriceModel {
 
     @Column(name = "IDPRICE")
-    @Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "VLPRICE")
