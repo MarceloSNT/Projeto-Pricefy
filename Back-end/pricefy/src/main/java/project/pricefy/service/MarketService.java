@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.pricefy.dto.request.MarketRequestDto;
 import project.pricefy.dto.response.MarketResponseDto;
-import project.pricefy.entity.MarketModel;
+import project.pricefy.model.MarketModel;
 import project.pricefy.repository.MarketRepository;
 
 import java.util.List;
@@ -38,5 +38,10 @@ public class MarketService {
                         marketModel.getName()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id){
+        marketRepository.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package project.pricefy.entity;
+package project.pricefy.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "TBMARKET")
 public class MarketModel {
 
-    @Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

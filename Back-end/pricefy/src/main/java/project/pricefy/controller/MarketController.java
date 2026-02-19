@@ -29,4 +29,10 @@ public class MarketController {
     public ResponseEntity<List<MarketResponseDto>> findAllMarkets(){
         return ResponseEntity.ok().body(marketService.listAll());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteMarket(@PathVariable Long id){
+        marketService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
